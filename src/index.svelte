@@ -7,7 +7,7 @@
                 rel="noreferrer"
                 target="_blank"
                 class="hover:underline"
-            >https://www.nalog.ru/rn77/news/activities_fts/10007632/</a>
+            >Правила расчёта</a>
         </div>
     </div>
 
