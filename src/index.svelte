@@ -112,7 +112,6 @@ function addItem(group)
         rate: DEFAULT_RATE
     }]
     groups = groups
-    allowSaving = true
 }
 
 function removeItem(group, item)
@@ -135,6 +134,7 @@ async function loadConfig()
     }
     if(!groups.length)
         addGroup()
+    allowSaving = true
 }
 
 async function saveConfig(groups)
