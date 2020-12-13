@@ -84,10 +84,10 @@ const DEFAULT_MIN_RATE = 1
 const DEFAULT_AMOUNT = 1_000_000
 const DEFAULT_RATE = 6
 
-export let groups = []
-export let allowSaving = false
+let groups = []
+let allowSaving = false
 
-export function addGroup()
+function addGroup()
 {
     const lastGroup = cloneDeep(groups[groups.length - 1])
 
@@ -105,7 +105,7 @@ export function addGroup()
         addItem(groups[groups.length - 1])
 }
 
-export function addItem(group)
+function addItem(group)
 {
     group.items = [...group.items, {
         amount: DEFAULT_AMOUNT,
@@ -115,13 +115,13 @@ export function addItem(group)
     allowSaving = true
 }
 
-export function removeItem(group, item)
+function removeItem(group, item)
 {
     group.items = group.items.filter(i => i !== item)
     groups = groups
 }
 
-export function removeGroup(group)
+function removeGroup(group)
 {
     groups = groups.filter(i => i !== group)
 }
@@ -155,8 +155,8 @@ const rateFormatter = new Intl.NumberFormat('ru-RU', {
     maximumFractionDigits: 2
 })
 
-export function m(x){return moneyFormatter.format(x)}
-export function r(x){return rateFormatter.format(x)}
+function m(x){return moneyFormatter.format(x)}
+function r(x){return rateFormatter.format(x)}
 function i(x){return parseInt(x) || 0}
 function f(x){return parseFloat(x) || 0}
 
@@ -174,7 +174,7 @@ const taxOfIncome = g => Math.ceil(taxAmount(g) / totalIncome(g) * 10000) / 1000
 const realAvgIncomeRate = g => Math.ceil(10000 * realIncome(g) / totalAmount(g) ) / 10000 || 0
 const avgIncomeRateLoss = g => avgIncomeRate(g) - realAvgIncomeRate(g)
 
-export function groupRows(group)
+function groupRows(group)
 {
     return [
         ['Общая сумма вкладов', m(totalAmount(group))],
