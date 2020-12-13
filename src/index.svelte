@@ -1,6 +1,6 @@
 <div class="mx-auto flex flex-col h-screen">
     <div class="text-lg italic bg-yellow-200 mb-1 flex flex-row px-1 flex-none">
-        <div class="flex-1">Расчёт налогов на вклады (сроком на 1 год)</div>
+        <div class="flex-1">Расчёт налогов на проценты по вкладам (сроком на 1 год)</div>
         <div class="flex-none">
             <a
                 href="https://www.nalog.ru/rn77/news/activities_fts/10007632/"
