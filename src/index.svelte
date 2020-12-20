@@ -157,21 +157,20 @@ const rateFormatter = new Intl.NumberFormat('ru-RU', {
 
 function m(x){return moneyFormatter.format(x)}
 function r(x){return rateFormatter.format(x)}
-function i(x){return parseInt(x) || 0}
 function f(x){return parseFloat(x) || 0}
 
-const totalAmount = g => Math.ceil(g.items.reduce((s, x) => s + i(x.amount), 0))
-const totalIncome = g => Math.ceil(g.items.reduce((s, x) => s + i(x.amount) * f(x.rate) / 100, 0))
-const totalIncomeInTaxableAccounts = g => Math.ceil(g.items.reduce((s, x) => s + i(x.amount) * (f(x.rate) > f(g.minRate) ? f(x.rate) : 0) / 100, 0))
-const avgIncomeRate = g => Math.ceil(totalIncome(g) / totalAmount(g) * 1000) / 1000 || 0
-const nonTaxIncomeLimit = g => Math.ceil(i(g.baseAmount) * f(g.bankRate) / 100)
+const totalAmount = g => g.items.reduce((s, x) => s + f(x.amount), 0)
+const totalIncome = g => g.items.reduce((s, x) => s + f(x.amount) * f(x.rate) / 100, 0)
+const totalIncomeInTaxableAccounts = g => g.items.reduce((s, x) => s + f(x.amount) * (f(x.rate) > f(g.minRate) ? f(x.rate) : 0) / 100, 0)
+const avgIncomeRate = g => totalIncome(g) / totalAmount(g) || 0
+const nonTaxIncomeLimit = g => f(g.baseAmount) * f(g.bankRate) / 100
 const taxedIncome = g => Math.max(0, totalIncomeInTaxableAccounts(g) - nonTaxIncomeLimit(g))
 const nonTaxIncome = g => totalIncome(g) - taxedIncome(g)
-const taxedIncomeRatio = g => Math.ceil(10000 * taxedIncome(g) / totalIncome(g)) / 10000 || 0
-const taxAmount = g => Math.ceil(taxedIncome(g) * f(g.taxRate) / 100)
+const taxedIncomeRatio = g => taxedIncome(g) / totalIncome(g) || 0
+const taxAmount = g => taxedIncome(g) * f(g.taxRate) / 100
 const realIncome = g => totalIncome(g) - taxAmount(g)
-const taxOfIncome = g => Math.ceil(taxAmount(g) / totalIncome(g) * 10000) / 10000 || 0
-const realAvgIncomeRate = g => Math.ceil(10000 * realIncome(g) / totalAmount(g) ) / 10000 || 0
+const taxOfIncome = g => taxAmount(g) / totalIncome(g) || 0
+const realAvgIncomeRate = g => realIncome(g) / totalAmount(g) || 0
 const avgIncomeRateLoss = g => avgIncomeRate(g) - realAvgIncomeRate(g)
 
 function groupRows(group)
