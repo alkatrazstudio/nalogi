@@ -164,9 +164,9 @@ const totalAmount = g => Math.ceil(g.items.reduce((s, x) => s + i(x.amount), 0))
 const totalIncome = g => Math.ceil(g.items.reduce((s, x) => s + i(x.amount) * f(x.rate) / 100, 0))
 const totalIncomeInTaxableAccounts = g => Math.ceil(g.items.reduce((s, x) => s + i(x.amount) * (f(x.rate) > f(g.minRate) ? f(x.rate) : 0) / 100, 0))
 const avgIncomeRate = g => Math.ceil(totalIncome(g) / totalAmount(g) * 1000) / 1000 || 0
-const nonTaxAmountLimit = g => Math.ceil(i(g.baseAmount) * f(g.bankRate) / 100)
-const nonTaxAmount = g => Math.min(totalIncome(g), nonTaxAmountLimit(g))
-const taxedIncome = g => Math.max(0, totalIncomeInTaxableAccounts(g) - nonTaxAmountLimit(g))
+const nonTaxIncomeLimit = g => Math.ceil(i(g.baseAmount) * f(g.bankRate) / 100)
+const taxedIncome = g => Math.max(0, totalIncomeInTaxableAccounts(g) - nonTaxIncomeLimit(g))
+const nonTaxIncome = g => totalIncome(g) - taxedIncome(g)
 const taxedIncomeRatio = g => Math.ceil(10000 * taxedIncome(g) / totalIncome(g)) / 10000 || 0
 const taxAmount = g => Math.ceil(taxedIncome(g) * f(g.taxRate) / 100)
 const realIncome = g => totalIncome(g) - taxAmount(g)
@@ -181,8 +181,8 @@ function groupRows(group)
         ['Общий доход (без налогов)', m(totalIncome(group))],
         ['Общий доход (без налогов) с облагаемых налогом вкладов', m(totalIncomeInTaxableAccounts(group))],
         ['Средний процент', r(avgIncomeRate(group))],
-        ['Предел дохода, не облагаемого налогом', m(nonTaxAmountLimit(group))],
-        ['Доход, не облагаемый налогом', m(nonTaxAmount(group))],
+        ['Минимальный доход, не облагаемый налогом', m(nonTaxIncomeLimit(group))],
+        ['Итоговый доход, не облагаемый налогом', m(nonTaxIncome(group))],
         ['Доход, облагаемый налогом', m(taxedIncome(group))],
         ['Процент дохода, облагаемого налогом', r(taxedIncomeRatio(group))],
         ['Налог', m(taxAmount(group))],
