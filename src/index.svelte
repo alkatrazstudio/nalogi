@@ -45,8 +45,8 @@
                     <tbody>
                         {#each groupRows(group) as row}
                         <tr>
-                            <td class="font-bold text-right">{row[0]}:</td>
-                            <td class="text-xl">{row[1]}</td>
+                            <td class="font-bold text-right">{row.title}:</td>
+                            <td class="text-xl">{row.val}</td>
                         </tr>
                         {/each}
                     </tbody>
@@ -176,20 +176,20 @@ const avgIncomeRateLoss = g => avgIncomeRate(g) - realAvgIncomeRate(g)
 function groupRows(group)
 {
     return [
-        ['Общая сумма вкладов', m(totalAmount(group))],
-        ['Общий доход (без налогов)', m(totalIncome(group))],
-        ['Общий доход (без налогов) с облагаемых налогом вкладов', m(totalIncomeInTaxableAccounts(group))],
-        ['Средний процент', r(avgIncomeRate(group))],
-        ['Минимальный доход, не облагаемый налогом', m(nonTaxIncomeLimit(group))],
-        ['Итоговый доход, не облагаемый налогом', m(nonTaxIncome(group))],
-        ['Доход, облагаемый налогом', m(taxedIncome(group))],
-        ['Процент дохода, облагаемого налогом', r(taxedIncomeRatio(group))],
-        ['Налог', m(taxAmount(group))],
-        ['Процент налога с дохода', r(taxOfIncome(group))],
-        ['Итоговый доход с учётом налогов', m(realIncome(group))],
-        ['Итоговый средний процент с учётом налогов', r(realAvgIncomeRate(group))],
-        ['Потеря процентов из-за налогов', r(avgIncomeRateLoss(group))]
-    ]
+        ['Общая сумма вкладов', m, totalAmount],
+        ['Общий доход (без налогов)', m, totalIncome],
+        ['Общий доход (без налогов) с облагаемых налогом вкладов', m, totalIncomeInTaxableAccounts],
+        ['Средний процент', r, avgIncomeRate],
+        ['Минимальный доход, не облагаемый налогом', m, nonTaxIncomeLimit],
+        ['Итоговый доход, не облагаемый налогом', m, nonTaxIncome],
+        ['Доход, облагаемый налогом', m, taxedIncome],
+        ['Процент дохода, облагаемого налогом', r, taxedIncomeRatio],
+        ['Налог', m, taxAmount],
+        ['Процент налога с дохода', r, taxOfIncome],
+        ['Итоговый доход с учётом налогов', m, realIncome],
+        ['Итоговый средний процент с учётом налогов', r, realAvgIncomeRate],
+        ['Потеря процентов из-за налогов', r, avgIncomeRateLoss]
+    ].map(([title, display, calc]) => ({title, val: display(calc(group))}))
 }
 
 $: {
